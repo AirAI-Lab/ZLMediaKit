@@ -2,6 +2,8 @@ name: Release GHCR image
 
 on:
   push:
+    branches:
+      - "release/*"
     tags:
       - "2026.*"
   workflow_dispatch:
@@ -36,6 +38,7 @@ jobs:
           else
             tag="${GITHUB_REF_NAME}"
           fi
+          if [[ "$tag" == release/* ]]; then tag="${tag##*/}"; fi
           [[ "$tag" =~ ^[A-Za-z0-9][A-Za-z0-9._-]*$ ]] || { echo "Invalid image tag: $tag" >&2; exit 1; }
           echo "tag=$tag" >> "$GITHUB_OUTPUT"
 
